@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const {connectDB} = require("./config/database");
 const {adminAuth} = require("./middleware/auth");
 
 app.use("/admin", adminAuth);
@@ -16,7 +17,11 @@ app.delete("/admin/deleteData", (req,res)=>{
     res.send("Record deleted successfully");
 })
 
-app.listen(7777,()=>{
-    console.log("Server is successfully running on the port 7777.....");
+connectDB().then(()=>{
+    console.log("Data Base Connected Sussfully");
+    app.listen("7777", ()=>{console.log("Serve is successfully listening on port 7777")})
+}).catch(()=>{
+    console.log("Database can not be connectded");
 });
+
 
